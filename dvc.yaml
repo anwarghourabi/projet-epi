@@ -1,0 +1,23 @@
+stages:
+  clean:
+    cmd: python src/data/clean.py data/raw data/clean
+    deps:
+      - src/data/clean.py
+      - data/raw
+    outs:
+      - data/clean
+    metrics:
+      - reports/clean.json:
+          cache: false
+  split:
+    cmd: python src/data/split.py data/clean data/processed
+    deps:
+      - src/data/split.py
+      - data/clean
+    params:
+      - split
+    outs:
+      - data/processed
+    metrics:
+      - reports/split.json:
+          cache: false

@@ -1,0 +1,5 @@
+split:
+  seed: 42
+  val_ratio: 0.10
+  test_ratio: 0.10
+  phash_threshold: 4

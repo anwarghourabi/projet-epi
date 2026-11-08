@@ -3,3 +3,17 @@ split:
   val_ratio: 0.10
   test_ratio: 0.10
   phash_threshold: 4
+train:
+  variant: n          # n = baseline, s ou m = modèle avancé
+  run_name: baseline-yolo11n
+  epochs: 50
+  imgsz: 640
+  batch: 16
+  patience: 15
+  seed: 42
+  mosaic: 1.0
+  mixup: 0.0
+  fraction: 1.0       # part du train utilisée (1.0 = tout)
+evaluate:
+  conf: 0.25          # seuil de confiance utilisé par l'API
+  iou: 0.7            # seuil IoU de la NMS

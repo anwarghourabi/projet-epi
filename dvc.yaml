@@ -21,3 +21,35 @@ stages:
     metrics:
       - reports/split.json:
           cache: false
+  train:
+    cmd: python src/models/train.py
+    deps:
+      - src/models/train.py
+      - src/models/architecture.py
+      - src/data/dataset.py
+      - data/processed
+    params:
+      - train
+    outs:
+      - models/best.pt
+      - models/run_id.txt:
+          cache: false
+    metrics:
+      - reports/train.json:
+          cache: false
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+      - src/models/evaluate.py
+      - models/best.pt
+      - models/run_id.txt
+      - data/processed
+    params:
+      - evaluate
+      - train.imgsz
+    outs:
+      - models/best.onnx
+      - models/best_int8.onnx
+    metrics:
+      - reports/metrics.json:
+          cache: false

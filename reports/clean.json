@@ -1,0 +1,24 @@
+{
+  "images": 1000,
+  "boxes": 14863,
+  "orphan_labels": [],
+  "duplicate_boxes": 0,
+  "tiny_boxes": 0,
+  "invalid_lines": 0,
+  "images_without_label": [],
+  "corrupt_images": [],
+  "classes": [
+    "helmet",
+    "gloves",
+    "vest",
+    "boots",
+    "goggles",
+    "Person",
+    "no_helmet",
+    "no_goggle",
+    "no_gloves",
+    "no_boots",
+    "forklift",
+    "no_vest"
+  ]
+}

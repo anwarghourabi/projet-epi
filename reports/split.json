@@ -1,0 +1,57 @@
+{
+  "groups": 1000,
+  "largest_group": 1,
+  "splits": {
+    "train": {
+      "images": 800,
+      "boxes": {
+        "no_boots": 595,
+        "Person": 2005,
+        "no_helmet": 648,
+        "no_gloves": 833,
+        "no_goggle": 277,
+        "no_vest": 456,
+        "helmet": 1303,
+        "gloves": 1541,
+        "vest": 1492,
+        "forklift": 268,
+        "boots": 2014,
+        "goggles": 587
+      }
+    },
+    "val": {
+      "images": 100,
+      "boxes": {
+        "helmet": 137,
+        "gloves": 190,
+        "vest": 168,
+        "goggles": 81,
+        "Person": 220,
+        "forklift": 39,
+        "no_boots": 71,
+        "boots": 231,
+        "no_helmet": 85,
+        "no_goggle": 37,
+        "no_gloves": 96,
+        "no_vest": 49
+      }
+    },
+    "test": {
+      "images": 100,
+      "boxes": {
+        "gloves": 198,
+        "vest": 156,
+        "boots": 239,
+        "goggles": 83,
+        "Person": 218,
+        "no_helmet": 80,
+        "no_boots": 81,
+        "no_gloves": 113,
+        "helmet": 136,
+        "no_vest": 62,
+        "no_goggle": 33,
+        "forklift": 41
+      }
+    }
+  }
+}

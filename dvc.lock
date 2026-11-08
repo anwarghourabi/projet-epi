@@ -1,0 +1,53 @@
+schema: '2.0'
+stages:
+  clean:
+    cmd: python src/data/clean.py data/raw data/clean
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 80ffeb4400a045128782ec451d99328f.dir
+      size: 647834864
+      nfiles: 2004
+    - path: src/data/clean.py
+      hash: md5
+      md5: 6b20ec581ade479f35777cbf7537ebc7
+      size: 4020
+    outs:
+    - path: data/clean
+      hash: md5
+      md5: f1804bf1eb034051a55b1cb9305d6bfd.dir
+      size: 647646063
+      nfiles: 2001
+    - path: reports/clean.json
+      hash: md5
+      md5: 2fde44659f6d295fe5065e7df444abe8
+      size: 402
+  split:
+    cmd: python src/data/split.py data/clean data/processed
+    deps:
+    - path: data/clean
+      hash: md5
+      md5: f1804bf1eb034051a55b1cb9305d6bfd.dir
+      size: 647646063
+      nfiles: 2001
+    - path: src/data/split.py
+      hash: md5
+      md5: 1b33ccf9c029054b992021ada345cbaf
+      size: 3205
+    params:
+      params.yaml:
+        split:
+          seed: 42
+          val_ratio: 0.1
+          test_ratio: 0.1
+          phash_threshold: 4
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 146b3ee0b1c75deaa7769e12b45ea704.dir
+      size: 647646158
+      nfiles: 2001
+    - path: reports/split.json
+      hash: md5
+      md5: a85db2010f0463ff8aef335fd2d051dc
+      size: 1170

@@ -14,15 +14,14 @@ import mlflow
 import numpy as np
 import onnxruntime as ort
 import yaml
-from mlflow import MlflowClient
 from onnxruntime.quantization import QuantType, quantize_dynamic
 from ultralytics import YOLO, settings
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.data.dataset import class_names, data_yaml  # noqa: E402
+from src.models.register import register  # noqa: E402
 
 MODELS = Path("models")
-REGISTERED_NAME = "epi-detector"
 
 
 def test_metrics(weights: Path, imgsz: int, prefix: str) -> dict:
@@ -51,23 +50,6 @@ def latency_ms(onnx_path: Path, imgsz: int, runs: int = 30) -> float:
     for _ in range(runs):
         session.run(None, {name: x})
     return (time.perf_counter() - start) / runs * 1000
-
-
-def register(run_id: str, score: float) -> str:
-    """Enregistre le modèle ONNX ; alias 'staging', et 'production' s'il bat la version en production."""
-    client = MlflowClient()
-    version = mlflow.register_model(f"runs:/{run_id}/onnx", REGISTERED_NAME).version
-    client.set_model_version_tag(REGISTERED_NAME, version, "test_mAP50_95", f"{score:.4f}")
-    client.set_registered_model_alias(REGISTERED_NAME, "staging", version)
-    try:
-        prod = client.get_model_version_by_alias(REGISTERED_NAME, "production")
-        prod_score = float(prod.tags.get("test_mAP50_95", 0))
-    except Exception:
-        prod_score = -1.0  # aucune version en production
-    if score > prod_score:
-        client.set_registered_model_alias(REGISTERED_NAME, "production", version)
-        return f"version {version} -> production ({score:.3f} > {prod_score:.3f})"
-    return f"version {version} -> staging ({score:.3f} <= production {prod_score:.3f})"
 
 
 def main() -> None:
@@ -105,7 +87,7 @@ def main() -> None:
         mlflow.log_artifact(str(int8), "onnx")
         mlflow.log_dict({"names": class_names(), "imgsz": imgsz, **p["evaluate"]}, "onnx/metadata.json")
     try:
-        status = register(run_id, metrics["test_mAP50_95"])
+        status = register(run_id, metrics["test_mAP50_95"], fp32)
     except Exception as err:  # le registre peut être indisponible (serveur local sans base, réseau)
         status = f"non enregistré ({err})"
 
@@ -116,5 +98,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    os.environ.setdefault("MLFLOW_TRACKING_URI", "file:./mlruns")
+    os.environ.setdefault("MLFLOW_TRACKING_URI", "sqlite:///mlflow.db")
     main()

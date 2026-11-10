@@ -102,9 +102,9 @@ stages:
     deps:
     - path: data/processed
       hash: md5
-      md5: 28fcbe63520fe3c49d133fc309b78e2d.dir
-      size: 648135089
-      nfiles: 2004
+      md5: 146b3ee0b1c75deaa7769e12b45ea704.dir
+      size: 647646158
+      nfiles: 2001
     - path: models/best.pt
       hash: md5
       md5: 3d53eeccf68bbfdd48aacfc2fd40c7ab
@@ -115,8 +115,12 @@ stages:
       size: 32
     - path: src/models/evaluate.py
       hash: md5
-      md5: 96fdd1cb17c33415f6fa03745a0c781d
-      size: 5316
+      md5: fda8560a60a8466fc5a584c6e873d328
+      size: 4370
+    - path: src/models/register.py
+      hash: md5
+      md5: c7d822bfef262a48c8e12e7359852dc3
+      size: 1510
     params:
       params.yaml:
         evaluate:

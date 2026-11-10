@@ -41,6 +41,7 @@ stages:
     cmd: python src/models/evaluate.py
     deps:
       - src/models/evaluate.py
+      - src/models/register.py
       - models/best.pt
       - models/run_id.txt
       - data/processed

@@ -51,3 +51,88 @@ stages:
       hash: md5
       md5: a85db2010f0463ff8aef335fd2d051dc
       size: 1170
+  train:
+    cmd: python src/models/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 542281c03f394a6e94623dc99f483858.dir
+      size: 648086917
+      nfiles: 2003
+    - path: src/data/dataset.py
+      hash: md5
+      md5: 4f7d17fe7bc3a40b4076021550a17d53
+      size: 1311
+    - path: src/models/architecture.py
+      hash: md5
+      md5: 61313ca29035662a6d95f983d744b678
+      size: 828
+    - path: src/models/train.py
+      hash: md5
+      md5: 62e083944ee47e7c52ec8f9aa54a1b59
+      size: 4112
+    params:
+      params.yaml:
+        train:
+          variant: s
+          run_name: yolo11s-800
+          epochs: 50
+          imgsz: 800
+          batch: 8
+          patience: 15
+          seed: 42
+          mosaic: 1.0
+          mixup: 0.0
+          fraction: 1.0
+    outs:
+    - path: models/best.pt
+      hash: md5
+      md5: 3d53eeccf68bbfdd48aacfc2fd40c7ab
+      size: 19180250
+    - path: models/run_id.txt
+      hash: md5
+      md5: 8febac4bddad71a291dcbdb6d79d7b5e
+      size: 32
+    - path: reports/train.json
+      hash: md5
+      md5: d638cb0a13ff48ca7d05d9b64e643143
+      size: 498
+  evaluate:
+    cmd: python src/models/evaluate.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 28fcbe63520fe3c49d133fc309b78e2d.dir
+      size: 648135089
+      nfiles: 2004
+    - path: models/best.pt
+      hash: md5
+      md5: 3d53eeccf68bbfdd48aacfc2fd40c7ab
+      size: 19180250
+    - path: models/run_id.txt
+      hash: md5
+      md5: 8febac4bddad71a291dcbdb6d79d7b5e
+      size: 32
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: 96fdd1cb17c33415f6fa03745a0c781d
+      size: 5316
+    params:
+      params.yaml:
+        evaluate:
+          conf: 0.25
+          iou: 0.7
+        train.imgsz: 800
+    outs:
+    - path: models/best.onnx
+      hash: md5
+      md5: c6a9dc76674f35b573bc41633a833149
+      size: 38039994
+    - path: models/best_int8.onnx
+      hash: md5
+      md5: b070ff378fd3ecc773510a24cfce0f40
+      size: 9965998
+    - path: reports/metrics.json
+      hash: md5
+      md5: f974200d2d527d45346eb79a9879da24
+      size: 854

@@ -1,0 +1,18 @@
+{
+  "val_mAP50": 0.8649,
+  "val_mAP50_95": 0.6458,
+  "val_precision": 0.9203,
+  "val_recall": 0.8021,
+  "val_AP50_95_helmet": 0.7947,
+  "val_AP50_95_gloves": 0.7699,
+  "val_AP50_95_vest": 0.8135,
+  "val_AP50_95_boots": 0.6734,
+  "val_AP50_95_goggles": 0.7255,
+  "val_AP50_95_Person": 0.8658,
+  "val_AP50_95_no_helmet": 0.4749,
+  "val_AP50_95_no_goggle": 0.1807,
+  "val_AP50_95_no_gloves": 0.5277,
+  "val_AP50_95_no_boots": 0.5809,
+  "val_AP50_95_forklift": 0.6941,
+  "val_AP50_95_no_vest": 0.6493
+}

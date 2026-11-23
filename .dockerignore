@@ -1,0 +1,14 @@
+# On n'envoie au build Docker que ce qui sert à l'image (les données font 650 Mo)
+data/
+runs/
+mlruns/
+mlartifacts/
+mlflow.db
+.venv/
+.git/
+.dvc/cache/
+notebooks/
+**/__pycache__/
+**/*.pyc
+models/*.pt
+models/best_int8.onnx

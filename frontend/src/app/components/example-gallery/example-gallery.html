@@ -1,0 +1,10 @@
+@if (examples().length) {
+  <p class="label">Ou essayez un exemple :</p>
+  <div class="grid">
+    @for (ex of examples(); track ex.file) {
+      <button type="button" (click)="pick(ex)" [title]="ex.title">
+        <img [src]="'examples/' + ex.file" [alt]="ex.title" loading="lazy" />
+      </button>
+    }
+  </div>
+}

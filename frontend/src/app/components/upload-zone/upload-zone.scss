@@ -1,0 +1,17 @@
+.zone {
+  display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 28px 16px;
+  border: 1.5px dashed #c8d8dc; border-radius: 14px; background: #f9fbfc;
+  color: var(--muted); cursor: pointer; text-align: center;
+  transition: background .18s, border-color .18s, transform .18s;
+  strong { color: var(--title); font-size: .91rem; font-weight: 720; }
+  > span:not(.icon) { font-size: .75rem; }
+  b { color: var(--accent); font-weight: 700; }
+  small { margin-top: 2px; color: #95a3ad; font-size: .65rem; }
+  .icon {
+    display: grid; place-items: center; width: 43px; height: 43px; margin-bottom: 4px;
+    border: 1px solid #dce9e9; border-radius: 13px; background: #edf5f4; color: var(--accent);
+    svg { width: 22px; height: 22px; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  }
+  &:hover, &.dragging { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+  &:focus-within { outline: 3px solid rgba(32, 91, 105, .2); outline-offset: 3px; }
+}

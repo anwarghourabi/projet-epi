@@ -1,0 +1,14 @@
+<div class="frame">
+  <canvas #canvas [hidden]="!src()"></canvas>
+  @if (!src()) {
+    <p class="empty">Aucune image pour l'instant : déposez une photo, choisissez un exemple ou lancez la webcam.</p>
+  }
+  @if (loading()) {
+    <div class="spinner" aria-label="Analyse en cours"></div>
+  }
+</div>
+<div class="legend">
+  <span><i style="background:#16a34a"></i>EPI porté</span>
+  <span><i style="background:#dc2626"></i>EPI manquant</span>
+  <span><i style="background:#2563eb"></i>Personne / chariot</span>
+</div>

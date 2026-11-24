@@ -1,0 +1,44 @@
+@if (result(); as r) {
+  <div class="verdict" [class.ok]="r.compliant" [class.ko]="!r.compliant">
+    @if (r.compliant) { ✓ Conforme : aucun EPI manquant détecté }
+    @else { ⚠ Non conforme : {{ r.alerts.length }} type(s) d'EPI manquant }
+  </div>
+
+  @if (r.alerts.length) {
+    <ul class="alerts">
+      @for (a of r.alerts; track a.class_name) { <li>{{ a.message }}</li> }
+    </ul>
+  }
+
+  <div class="latency">
+    <div><b>{{ r.latency_ms | number: '1.0-0' }} ms</b><span>serveur (modèle)</span></div>
+    <div><b>{{ r.client_latency_ms }} ms</b><span>navigateur (total)</span></div>
+    <div><b>{{ r.detections.length }}</b><span>détections</span></div>
+  </div>
+
+  @if (counts().length) {
+    <div class="chips">
+      @for (c of counts(); track c[0]) {
+        <span class="chip" [style.borderColor]="color(c[0])">{{ c[0] }} × {{ c[1] }}</span>
+      }
+    </div>
+  }
+
+  <h3>Équipements détectés <span>{{ r.detections.length }}</span></h3>
+  @for (d of sorted(); track $index) {
+    <div class="det">
+      <span class="name"><i [style.background]="color(d.class_name)"></i>{{ d.class_name }}</span>
+      <div class="bar"><div [style.width.%]="d.confidence * 100" [style.background]="color(d.class_name)"></div></div>
+      <span class="score">{{ d.confidence * 100 | number: '1.0-0' }} %</span>
+    </div>
+  } @empty {
+    <p class="muted">Aucun objet détecté au-dessus du seuil.</p>
+  }
+  <p class="muted small">Modèle {{ r.model_version }} · image {{ r.image_width }}×{{ r.image_height }}</p>
+} @else {
+  <div class="empty-state">
+    <span class="empty-icon" aria-hidden="true">⌁</span>
+    <strong>Votre rapport apparaîtra ici</strong>
+    <p>Importez une image ou lancez la webcam pour démarrer l’analyse de conformité.</p>
+  </div>
+}

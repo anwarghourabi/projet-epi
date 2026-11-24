@@ -1,0 +1,106 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Accueil SécuriVue">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 2.8 20 6v5.6c0 4.7-3.1 8-8 9.6-4.9-1.6-8-4.9-8-9.6V6l8-3.2Z" />
+          <path d="m8.4 12.1 2.3 2.3 4.9-5" />
+        </svg>
+      </span>
+      <span class="brand-copy"><strong>SécuriVue</strong><small>VISION · EPI</small></span>
+    </a>
+
+    <div class="status">
+      <span class="status-indicator" [class.ok]="health()?.model_loaded" [class.warn]="health() && !health()?.model_loaded" [class.ko]="apiDown()"></span>
+      @if (health(); as h) {
+        <span>{{ h.model_loaded ? 'Système opérationnel' : 'Modèle indisponible' }}</span>
+        @if (metadata(); as m) {
+          <small>{{ m.architecture }} · {{ m.input_size }} px
+            @if (m.metrics['test_mAP50_95']) { · mAP@[.5:.95] {{ m.metrics['test_mAP50_95'] | number: '1.3-3' }} }
+          </small>
+        }
+      } @else if (apiDown()) {
+        <span>API injoignable</span>
+        <button type="button" class="link" (click)="checkApi()">Réessayer</button>
+      } @else {
+        <span>Connexion à l’API…</span>
+      }
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <p class="eyebrow"><span></span> CONTRÔLE INTELLIGENT DES CHANTIERS</p>
+      <h1>La sécurité, en un coup d’œil.</h1>
+      <p class="hero-copy">Analysez les équipements de protection et repérez rapidement les situations à risque.</p>
+    </div>
+    <div class="hero-note">
+      <span class="hero-note-icon" aria-hidden="true">✦</span>
+      <span><strong>Analyse assistée par IA</strong><small>Détection visuelle en quelques secondes</small></span>
+    </div>
+  </section>
+
+  <main class="dashboard">
+    <section class="workspace card">
+      <div class="card-heading">
+        <div>
+          <p class="section-kicker">ESPACE DE TRAVAIL</p>
+          <h2>Nouvelle analyse</h2>
+        </div>
+        <span class="model-badge"><span></span> YOLO11s</span>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Source de l’image">
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'image'" [class.active]="mode() === 'image'" (click)="setMode('image')">
+          <span aria-hidden="true">▧</span> Importer une image
+        </button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'webcam'" [class.active]="mode() === 'webcam'" (click)="setMode('webcam')">
+          <span aria-hidden="true">◎</span> Webcam
+        </button>
+      </nav>
+
+      @if (mode() === 'image') {
+        <app-upload-zone (fileSelected)="analyzeFile($event)" (invalidFile)="showError($event)" />
+        <app-example-gallery (picked)="analyzeFile($event)" />
+      } @else {
+        <app-webcam [busy]="loading()" (frame)="analyzeFrame($event)" (cameraError)="showError($event)" />
+      }
+
+      <label class="conf">
+        <span class="conf-label">Seuil de confiance <b>{{ conf() | number: '1.2-2' }}</b></span>
+        <span class="conf-help">Ajustez la précision de la détection</span>
+        <input type="range" min="0.05" max="0.95" step="0.05" [value]="conf()" (change)="onConfChange($event)" />
+        <span class="range-labels"><span>Plus sensible</span><span>Plus précis</span></span>
+      </label>
+
+      @if (error(); as e) {
+        <div class="error" role="alert">{{ e }}</div>
+      }
+
+      <div class="viewer-heading">
+        <div><p class="section-kicker">RÉSULTAT VISUEL</p><h3>Image analysée</h3></div>
+        <span class="viewer-live" [class.processing]="loading()"><i></i>
+          @if (loading()) { Analyse en cours }
+          @else if (result()) { Détections annotées }
+          @else if (imageSrc()) { Image chargée }
+          @else { En attente d’une image }
+        </span>
+      </div>
+      <app-detection-viewer [src]="imageSrc()" [detections]="result()?.detections ?? []" [loading]="loading()" />
+    </section>
+
+    <aside class="results-card card">
+      <div class="card-heading">
+        <div>
+          <p class="section-kicker">RAPPORT D’ANALYSE</p>
+          <h2>Résultats</h2>
+        </div>
+        <span class="report-icon" aria-hidden="true">↗</span>
+      </div>
+      <app-results-panel [result]="result()" />
+      <div class="privacy-note"><span aria-hidden="true">◈</span> Les résultats sont calculés par le modèle de détection.</div>
+    </aside>
+  </main>
+
+  <footer class="footer"><span>SécuriVue <i>·</i> Détection intelligente des EPI</span><span>Conçu pour des chantiers plus sûrs</span></footer>
+</div>

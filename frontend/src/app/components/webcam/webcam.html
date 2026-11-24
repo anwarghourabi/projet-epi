@@ -1,0 +1,10 @@
+<div class="controls">
+  @if (!running()) {
+    <button type="button" class="primary" (click)="start()">Démarrer la webcam</button>
+  } @else {
+    <button type="button" (click)="stop()">Arrêter</button>
+    <span class="live">● en direct</span>
+  }
+</div>
+<!-- Petit aperçu de la caméra ; l'image analysée avec ses boîtes s'affiche dans le visualiseur. -->
+<video #video muted playsinline [class.on]="running()"></video>

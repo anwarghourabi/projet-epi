@@ -1,0 +1,27 @@
+@use './app/app';
+
+:root {
+  color-scheme: light;
+  --text: #263846;
+  --muted: #71818d;
+  --title: #19384f;
+  --bg: #f5f8fa;
+  --surface: #ffffff;
+  --border: #e4ebef;
+  --border-strong: #cad7df;
+  --accent: #205b69;
+  --accent-soft: #edf5f5;
+}
+* { box-sizing: border-box; }
+body {
+  min-width: 320px; min-height: 100vh; margin: 0; color: var(--text);
+  background:
+    radial-gradient(ellipse at 86% 0%, rgba(223, 239, 234, .42), transparent 34rem),
+    var(--bg);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; }
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 3px solid rgba(32, 91, 105, .28); outline-offset: 3px;
+}
